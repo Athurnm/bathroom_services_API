@@ -4,9 +4,11 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const productRoutes = require('./api/routes/products');
-const orderRoutes = require('./api/routes/orders');
+const wumRoutes = require('./api/routes/waterUsageManagement');
+const bcmRoutes = require('./api/routes/bathroomCleanlinessManagement');
+const bamRoutes = require('./api/routes/bathroomAvailabilityManagement.js')
 
+//use mongoDB dbms to manage the database
 mongoose.connect(
     'mongodb://athurnm:dontangry1234@clusterinit-shard-00-00-qzsnl.mongodb.net:27017,clusterinit-shard-00-01-qzsnl.mongodb.net:27017,clusterinit-shard-00-02-qzsnl.mongodb.net:27017/test?ssl=true&replicaSet=ClusterInit-shard-0&authSource=admin&retryWrites=true'
     , {
@@ -32,15 +34,18 @@ app.use((req, res, next) => {
 });
 
 // Routes which should handle requests
-app.use('/products', productRoutes);
-app.use('/orders', orderRoutes);
+app.use('/waterusagemanagement', wumRoutes);
+app.use('/bathroomcleanlinessmanagement', bcmRoutes);
+app.use('/bathroomavailabilitymanagement', bamRoutes)
 
+// if the path is wrong instatiate callback (404)
 app.use((req, res, next) => {
-    const error = new Error('not found');
+    const error = new Error('page not found');
     error.status = 404;
     next(error);
 });
 
+//if error exist, do make the message
 app.use((error, req, res, next) => {
     res.status(error.status || 500);
     res.json({

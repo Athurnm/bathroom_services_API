@@ -1,6 +1,13 @@
-const express = require('express');
-const router = express.Router();
+/*
+ * This file is the backend of bathroom availability management (BAM) services and handling all HTTP methods
+ * All logic of BAM services are implemented here
+ * filename: bathroomAvailabilityManagement.js
+ */
 
+const express = require('express'); //use express library to handle routing
+const router = express.Router(); //instatiate router object
+
+// Dibawah diubah ya sesuai kebutuhan
 // Handle incoming GET request to /orders
 router.get('/', (req,res,next) => {
     res.status(200).json({

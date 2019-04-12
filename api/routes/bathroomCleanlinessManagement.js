@@ -1,7 +1,14 @@
+/*
+ * This file is the backend of bathroom cleanliness management(BCM) services and handling all HTTP methods
+ * All logic of BCM services are implemented here
+ * filename: bathroomCleanlinessManagement.js
+ */
+
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
+// diubah ya template dibawah
 const Product = require('../models/product')
 
 //POST and GET HTML methods for acquiring product and input product list

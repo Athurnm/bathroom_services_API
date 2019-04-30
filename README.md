@@ -1,11 +1,11 @@
-#BATHROOM MANAGEMENT SERVICE PLATFORM
+# BATHROOM MANAGEMENT SERVICE PLATFORM
 =====================================
-##Composite Services:
+## Composite Services:
     1. Bathroom water usage management
     2. Bathroom cleanliness management
     3. Bathroom Availability management
 
-##Developed by:
+## Developed by:
     1. Athur Naufan M
     2. Akbar Ghifari
     3. Christabel Lawandy E
@@ -50,6 +50,21 @@ This services are written in **nodeJS**
 As Front-end are written in **HTML,CSS, and ReactJS**
 
 ## List of API Services
+- Water Usage Loggin
+- Water Usage Monitoring
+- Water Usage Analysis
+- Cleanliness Report
+- Availability Report
+- Cleanliness Command
+- Availability Command
+- Capacity Sensing
+- Capacity Validating
+- Capacity Data Updating
+- Notification
+- SSO
+- Water Pollution Logging
+- Water Pollution Monitoring
+- Water Pollution Analysis
 
 ### **Getting All People**
 
@@ -262,9 +277,10 @@ API for deleting person.
 
 ## Authors
 
-* **Dimas Praja Purwa Aji (10209065)** - [prajadimas](http://178.128.104.74:9000/prajadimas)
-* **Novianto Budi Kurniawan (33216028)** - [noviantobudik](http://178.128.104.74:9000/noviantobudik)
-* **Gery Reynaldi (23217016)** - [geryreynaldi](http://178.128.104.74:9000/geryreynaldi)
+* **Athur Naufan Muharam (18216003)** - [athurnm](https://gitlab.com/Athurnm)
+* **Akbar Ghifari (18216011)** - [akbarghifari]()
+* **Christabel Eleora L (18216015)** - [christabel5899](https://gitlab.com/christabel5899)
+* **Qonita Salamah A (18216023)** - [QonitaS](https://gitlab.com/18216023)
 
 ## License
 

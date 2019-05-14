@@ -61,7 +61,7 @@ router.post('/', (req, res, next) => {
  */
 router.get('/',(req,res,next)=>{
     availability_command.find()
-        .select("type command toilet _id username timeStamp")
+        .select("type command toilet _id username timeStamp solved")
         .exec()
         .then(docs => {
             const response = {
@@ -126,7 +126,7 @@ router.get('/:Id', (req,res,next)=> {
  * GET specific cleanliness command (based on janitor/assignto prop)
  * to call use url: 'endpoint/availabilityCommand/<janitorName>'
  */
-router.get('/:janitorName', (req,res,next)=> {
+router.get('/assigned/:janitorName', (req,res,next)=> {
     const id = req.params.janitorName;
     availability_command.find({assignto: id})
         .select('type command toilet _id solved')
@@ -154,7 +154,7 @@ router.get('/:janitorName', (req,res,next)=> {
  * GET specific cleanliness command (based on engineer/assignto and solved parameter)
  * to call use url: 'endpoint/availabilityCommand/<engineerName>'
  */
-router.get('/:engineerName/:hasSolved', (req, res, next) => {
+router.get('/assigned/:engineerName/:hasSolved', (req, res, next) => {
     const id = req.params.engineerName
     const solved = req.params.hasSolved
     availability_command.find({

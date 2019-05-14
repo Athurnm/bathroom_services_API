@@ -16,8 +16,8 @@ const waterPollutionLoggingRoutes = require('./api/routes/waterPollutionLogging'
 
 //use mongoDB dbms to manage the database
 mongoose.connect(
-    //'mongodb+srv://athurnm:dontangry1234@clusterbathroom-zbg5r.mongodb.net/bathroom-services-api?retryWrites=true'
-    'mongodb://localhost:27017/bathroom-services-api?retryWrites=true'
+    'mongodb+srv://athurnm:dontangry1234@clusterbathroom-zbg5r.mongodb.net/bathroom-services-api?retryWrites=true'
+    // for development: 'mongodb://localhost:27017/bathroom-services-api?retryWrites=true'
     , {
         useNewUrlParser: true,
         useCreateIndex: true

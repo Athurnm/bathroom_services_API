@@ -85,7 +85,7 @@ router.get('/', (req, res, next) => {
 
 // get specific bathroom availability management
 router.get('/:toiletId', (req, res, next) => {
-    const id = req.params.toilet;
+    const id = req.params.toiletId;
     Availability_management.findOne({toilet: id})
         .exec()
         .then(doc => {

@@ -10,11 +10,13 @@ const bamRoutes = require('./api/routes/bathroomAvailabilityManagement.js')
 
 //use mongoDB dbms to manage the database
 mongoose.connect(
-    'mongodb://athurnm:dontangry1234@clusterinit-shard-00-00-qzsnl.mongodb.net:27017,clusterinit-shard-00-01-qzsnl.mongodb.net:27017,clusterinit-shard-00-02-qzsnl.mongodb.net:27017/test?ssl=true&replicaSet=ClusterInit-shard-0&authSource=admin&retryWrites=true'
+    'mongodb+srv://athurnm:dontangry1234@clusterbathroom-zbg5r.mongodb.net/test?retryWrites=true'
     , {
         useNewUrlParser: true
-    });
+    }
+);
 
+mongoose.Promise = global.Promise
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended:false}));
@@ -34,9 +36,9 @@ app.use((req, res, next) => {
 });
 
 // Routes which should handle requests
-app.use('/waterusagemanagement', wumRoutes);
-app.use('/bathroomcleanlinessmanagement', bcmRoutes);
-app.use('/bathroomavailabilitymanagement', bamRoutes)
+app.use('/wum', wumRoutes)
+app.use('/bcm', bcmRoutes)
+app.use('/bam', bamRoutes)
 
 // if the path is wrong instatiate callback (404)
 app.use((req, res, next) => {

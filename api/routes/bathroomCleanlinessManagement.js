@@ -8,21 +8,31 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-// diubah ya template dibawah
-const Product = require('../models/product')
+const Cleanliness_report = require('../models/cleanliness_report')
 
-//POST and GET HTML methods for acquiring product and input product list
+// BCM POST
+// Post new report using JSON body
 router.post('/', (req, res, next) => {
-    const product = new Product({
+    const clean_report = new Cleanliness_report({
         _id: new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        price: req.body.price
+        type: req.body.type,
+        report: req.body.report,
+        toilet: req.body.toilet
     });
-    product.save().then(result =>{
+    clean_report.save().then(result =>{
         console.log(result);  
         res.status(201).json({
-            message: 'POST method on /products succeed',
-            createdProduct: product
+            message: 'report created successfully',
+            Report_on_cleanliness: {
+                type: result.type,
+                report: result.report,
+                toilet: result.toilet,
+                _id: result._id,
+                request: {
+                    type: 'GET',
+                    url: 'http://localhost:3000/bcm' + result._id
+                }
+            }
         });
     })
     .catch(err => {
@@ -33,18 +43,71 @@ router.post('/', (req, res, next) => {
     });
 });
 
-router.get('/:productId', (req,res,next)=> {
-    const id = req.params.productId;
-    Product.findById(id)
+// BCM GET report
+// get all cleanliness report
+router.get('/',(req,res,next)=>{
+    Cleanliness_report.find()
+        .select("type report toilet _id")
+        .exec()
+        .then(docs => {
+            const response = {
+                count: docs.length,
+                product: docs.map(doc => {
+                    return {
+                        ...doc._doc,
+                        request: {
+                            type: 'GET',
+                            url: 'http://localhost:3000/bcm' + doc._id
+                        }
+                    }
+                    
+                })
+            }
+            console.log(docs);
+            if(docs.length >=0){
+                res.status(200).json(response)            
+            } else {
+                res.status(404).json({
+                    error: "No file found"
+                })
+            }
+
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            })
+        })
+})
+
+// get specific cleanliness report
+router.get('/:cleanlinessId', (req,res,next)=> {
+    const id = req.params.cleanlinessId;
+    Cleanliness_report.findById(id)
+        .select('type report toilet _id')
         .exec()
         .then(doc => {
+            const response = {
+                count: docs.length,
+                product: docs.map(doc => {
+                    return {
+                        ...doc._doc,
+                        request: {
+                            type: 'GET',
+                            url: 'http://localhost:3000/bcm' + doc._id
+                        }
+                    }
+                    
+                })
+            }
             console.log(doc);  
             if (doc){
-                res.status(200).json(doc);
+                res.status(200).json(response);
             } else{
                 res.status(404).json({message: 'no valid entry found for provided id'})
             }
-            res.status(200).json(doc);          
+            res.status(200).json(response);          
         })
         .catch(err => {
             console.log(err);
@@ -52,16 +115,58 @@ router.get('/:productId', (req,res,next)=> {
         });
 });
 
-router.patch('/:productId', (req, res, next) =>{
-    res.status(200).json({
-        message: 'updated product!'
-    });
+router.patch('/:cleanlinessId', (req, res, next) =>{
+    const id = req.params.cleanlinessId
+    const updateOps = {}
+    for (const ops of req.body){
+        updateOps[ops.propName] = ops.value
+    }
+    Cleanliness_report.update({_id: id},{$set: updateOps})
+        .exec()
+        .then(result => {
+            console.log(result);
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({error: err})
+        })
 });
 
-router.delete('/:productId', (req, res, next) => {
-    res.status(200).json({
-        message: 'Deleted product!'
-    });
+// DEL method
+// Deleting specific cleanliness report
+router.delete('/:cleanlinessId', (req, res, next) => {
+    const id = req.params.cleanlinessId
+    Cleanliness_report.remove({_id: id })
+        .exec()
+        .then(result => {
+            res.status(200).json({
+                message: 'report deleted'
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            })
+        })
 });
+
+router.delete('/',(req,res,next)=> {
+    Cleanliness_report.remove()
+        .exec()
+        .then(()=>{
+            res.status(200).json({
+                message: 'all report deleted'
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json ({
+                error:err
+            })
+            
+        })
+})
 
 module.exports = router;

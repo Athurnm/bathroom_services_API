@@ -50,13 +50,13 @@ This services are written in **nodeJS**
 As Front-end are written in **HTML,CSS, and ReactJS**
 
 ## List of API Services
-- Water Usage Loggin
+- Water Usage Logging
 - Water Usage Monitoring
 - Water Usage Analysis
-- Cleanliness Report
-- Availability Report
-- Cleanliness Command
-- Availability Command
+- Cleanliness Report v
+- Availability Report v
+- Cleanliness Command v
+- Availability Command v
 - Capacity Sensing
 - Capacity Validating
 - Capacity Data Updating

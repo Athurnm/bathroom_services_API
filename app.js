@@ -5,14 +5,17 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const wumRoutes = require('./api/routes/waterUsageManagement');
-const bcmRoutes = require('./api/routes/bathroomCleanlinessManagement');
-const bamRoutes = require('./api/routes/bathroomAvailabilityManagement.js')
+const cleanreportRoutes = require('./api/routes/cleanlinessReport');
+const cleancommandRoutes = require('./api/routes/cleanlinessCommand')
+const bamRoutes = require('./api/routes/bathroomAvailabilityManagement')
+
 
 //use mongoDB dbms to manage the database
 mongoose.connect(
-    'mongodb+srv://athurnm:dontangry1234@clusterbathroom-zbg5r.mongodb.net/test?retryWrites=true'
+    'mongodb+srv://athurnm:dontangry1234@clusterbathroom-zbg5r.mongodb.net/bathroom-services-api?retryWrites=true'
     , {
-        useNewUrlParser: true
+        useNewUrlParser: true,
+        useCreateIndex: true
     }
 );
 
@@ -37,7 +40,8 @@ app.use((req, res, next) => {
 
 // Routes which should handle requests
 app.use('/wum', wumRoutes)
-app.use('/bcm', bcmRoutes)
+app.use('/cleanReport', cleanreportRoutes)
+app.use('/cleanCommand', cleancommandRoutes)
 app.use('/bam', bamRoutes)
 
 // if the path is wrong instatiate callback (404)

@@ -1,7 +1,7 @@
 /*
- * This file is the backend of availability command (cleanCommand) services and handling all HTTP methods
- * All logic of cleanCommand services are implemented here
- * filename: bathroomCleanlinessManagement.js
+ * This file is the backend of availability command (availabilityCommand) services and handling all HTTP methods
+ * All logic of availabilityCommand services are implemented here
+ * filename: availabilityCommand.js
  */
 
 const express = require('express');
@@ -10,18 +10,24 @@ const mongoose = require('mongoose');
 
 const availability_command = require('../models/availability_command')
 
-// cleanCommand POST
+// availabilityCommand POST
 /**
  * @param 
- * POST a new command using JSON body
- * to call use url: 'endpoint/cleancommand/' with POST header
+ * POST a new command for cleaning using JSON body
+ * to call use url: 'endpoint/availabilityCommand/' with POST header
+ * and use JSON body with following format:
+ *  {
+ *      "command": <command for cleaning>
+ *      "toilet" : <toilet_id>
+ *      "solved" : <has been solved or not>
+ *  }
  */
 router.post('/', (req, res, next) => {
     const clean_command = new availability_command({
         _id: new mongoose.Types.ObjectId(),
-        type: req.body.type,
         command: req.body.command,
-        toilet: req.body.toilet
+        toilet: req.body.toilet,
+        assignto: req.body.assignto
     });
     clean_command.save().then(result =>{
         console.log(result);  
@@ -34,7 +40,7 @@ router.post('/', (req, res, next) => {
                 _id: result._id,
                 request: {
                     type: 'GET',
-                    url: 'http://localhost:3000/cleanCommand' + result._id
+                    url: 'http://localhost:3000/availabilityCommand' + result._id
                 }
             }
         });
@@ -47,11 +53,11 @@ router.post('/', (req, res, next) => {
     });
 });
 
-// cleanCommand GET command
+// availabilityCommand GET command
 /**
  * @param 
  * GET all cleanliness command 
- * to call use url: 'endpoint/cleancommand/'
+ * to call use url: 'endpoint/availabilityCommand/'
  */
 router.get('/',(req,res,next)=>{
     availability_command.find()
@@ -65,7 +71,7 @@ router.get('/',(req,res,next)=>{
                         ...doc._doc,
                         request: {
                             type: 'GET',
-                            url: 'http://localhost:3000/cleanCommand' + doc._id
+                            url: 'http://localhost:3000/availabilityCommand' + doc._id
                         }
                     }
                     
@@ -92,27 +98,15 @@ router.get('/',(req,res,next)=>{
 /**
  * @param objectId
  * GET specific cleanliness command (based on Id)
- * to call use url: 'endpoint/cleancommand/<objectId>'
+ * to call use url: 'endpoint/availabilityCommand/<objectId>'
  */
 router.get('/:Id', (req,res,next)=> {
     const id = req.params.Id;
     availability_command.findById(id)
-        .select('type command toilet _id')
+        .select('type command toilet _id solved assignto')
         .exec()
         .then(doc => {
-            const response = {
-                count: docs.length,
-                product: docs.map(doc => {
-                    return {
-                        ...doc._doc,
-                        request: {
-                            type: 'GET',
-                            url: 'http://localhost:3000/cleanCommand' + doc._id
-                        }
-                    }
-                    
-                })
-            }
+            const response = doc
             console.log(doc);  
             if (doc){
                 res.status(200).json(response);
@@ -130,26 +124,16 @@ router.get('/:Id', (req,res,next)=> {
 /**
  * @param janitorName
  * GET specific cleanliness command (based on janitor/assignto prop)
- * to call use url: 'endpoint/cleancommand/<janitorName>'
+ * to call use url: 'endpoint/availabilityCommand/<janitorName>'
  */
 router.get('/:janitorName', (req,res,next)=> {
     const id = req.params.janitorName;
     availability_command.find({assignto: id})
-        .select('type command toilet _id')
+        .select('type command toilet _id solved')
         .exec()
         .then(doc => {
             const response = {
-                count: docs.length,
-                product: docs.map(doc => {
-                    return {
-                        ...doc._doc,
-                        request: {
-                            type: 'GET',
-                            url: 'http://localhost:3000/cleanCommand' + doc._id
-                        }
-                    }
-                    
-                })
+                command: doc
             }
             console.log(doc);  
             if (doc){
@@ -166,13 +150,55 @@ router.get('/:janitorName', (req,res,next)=> {
 });
 
 /**
- * @param cleanlinessId
- * Patch/update specific cleanliness command (based on ObjectId)
- * to call use url: 'endpoint/cleancommand/<cleanlinessId>'
- * with PATCH header
+ * @param engineerName @param hasSolved
+ * GET specific cleanliness command (based on engineer/assignto and solved parameter)
+ * to call use url: 'endpoint/availabilityCommand/<engineerName>'
  */
-router.patch('/:cleanlinessId', (req, res, next) =>{
-    const id = req.params.cleanlinessId
+router.get('/:engineerName/:hasSolved', (req, res, next) => {
+    const id = req.params.engineerName
+    const solved = req.params.hasSolved
+    availability_command.find({
+            assignto: id, solved: solved
+        })
+        .select('type command toilet _id solved')
+        .exec()
+        .then(doc => {
+            const response = {
+                command: doc
+            }
+            console.log(doc);
+            if (doc) {
+                res.status(200).json(response);
+            } else {
+                res.status(404).json({
+                    message: 'no valid entry found for provided id'
+                })
+            }
+            res.status(200).json(response);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+});
+
+/**
+ * PATCH / UPDATE record value
+ * @param availabilityID
+ * Patch/update specific cleanliness command (based on ObjectId)
+ * to call use url: 'endpoint/availabilityCommand/<availabilityID>'
+ * with PATCH header
+ * body is in JSON with following format:
+ *  [
+ *      {
+ *          "propName": "propValue"
+ *      }
+ *  ]
+ */
+router.patch('/:availabilityID', (req, res, next) =>{
+    const id = req.params.availabilityID
     const updateOps = {}
     for (const ops of req.body){
         updateOps[ops.propName] = ops.value
@@ -189,11 +215,40 @@ router.patch('/:cleanlinessId', (req, res, next) =>{
         })
 });
 
+/**
+ * UPDATE to make command SOLVED TRUE
+ * @param availabilityID
+ * Patch/update specific cleanliness command (based on ObjectId)
+ * to call use url: 'endpoint/availabilityCommand/<availabilityID>'
+ * with PATCH header
+ */
+router.patch('/:availabilityID/:hasSolved', (req, res, next) => {
+    const id = req.params.availabilityID
+    const hasSolved = req.params.hasSolved
+    const updateOps = {solved: hasSolved}
+    availability_command.update({
+            _id: id
+        }, {
+            $set: updateOps
+        })
+        .exec()
+        .then(result => {
+            console.log(result);
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            })
+        })
+});
+
 // DEL method
 /**
  * @param cleanlinessId
  * Delete specific cleanliness command (based on ObjectId)
- * to call use url: 'endpoint/cleancommand/<cleanlinessId>'
+ * to call use url: 'endpoint/availabilityCommand/<cleanlinessId>'
  * with DEL header
  */
 router.delete('/:cleanlinessId', (req, res, next) => {
@@ -216,7 +271,7 @@ router.delete('/:cleanlinessId', (req, res, next) => {
 /**
  * @param cleanlinessId
  * Delete all cleanliness command
- * to call use url: 'endpoint/cleancommand/<cleanlinessId>'
+ * to call use url: 'endpoint/availabilityCommand/'
  * with DEL header
  */
 router.delete('/',(req,res,next)=> {

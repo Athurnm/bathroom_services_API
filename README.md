@@ -47,22 +47,18 @@ Bathroom Management Service Platform memiliki 13 kandidat layanan yang tergabung
 ## Language
 
 This services are written in **nodeJS**
-As Front-end are written in **HTML,CSS, and ReactJS**
+As Front-end are written in **HTML,CSS, and PHP**
 
 ## List of API Services
-- Water Usage Logging
-- Water Usage Monitoring
+- Water Usage Logging v
 - Water Usage Analysis
 - Cleanliness Report v
 - Availability Report v
 - Cleanliness Command v
 - Availability Command v
-- Capacity Sensing
-- Capacity Validating
-- Capacity Data Updating
 - Notification
 - SSO
-- Water Pollution Logging
+- Water Pollution Logging v
 - Water Pollution Monitoring
 - Water Pollution Analysis
 

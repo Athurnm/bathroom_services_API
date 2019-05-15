@@ -18,20 +18,18 @@ License: Open Source and can be used freely
 
 Bathroom Management Service Platform memiliki 13 kandidat layanan yang tergabung dalam 3 service systems yakni Bathroom Availability Management, Bathroom Cleanliness Management, dan Water Usage Management. Platform ini ditunjukan dengan menggunakan web page dan dengan tambahan *Arduino* untuk *support* pada layanan-layanan ini.
 
+**BaseURL : "https://bathroom-manager-api.herokuapp.com"**
+
 ---
 
 * [Language](#language)
 * [List of API services](#list-of-api-services)
   - [Water Usage Logging](#water-usage-logging)
-  - [Water Usage Monitoring](#water-usage-monitoring)
   - [Water Usage Analysis](#water-usage-analysis)
   - [Cleanliness Report](#cleanliness-report)
   - [Availability Report](#availability-report)
   - [Cleanliness Command](#cleanliness-command)
   - [Availability Command](#availability-command)
-  - [Capacity Sensing](#capacity-sensing)
-  - [Capacity Validating](#capacity-validating)
-  - [Capacity Data Updating](#capacity-data-updating)
   - [Notification](#notification)
   - [SSO](#sso)
   - [Water Pollution Logging](#water-pollution-logging)
@@ -49,227 +47,65 @@ Bathroom Management Service Platform memiliki 13 kandidat layanan yang tergabung
 This services are written in **nodeJS**
 As Front-end are written in **HTML,CSS, and PHP**
 
+
 ## List of API Services
-- Water Usage Logging v
+- Water Usage Logging 
 - Water Usage Analysis
-- Cleanliness Report v
-- Availability Report v
-- Cleanliness Command v
-- Availability Command v
+- Cleanliness Report 
+- Availability Report 
+- Cleanliness Command 
+- Availability Command 
 - Notification
 - SSO
-- Water Pollution Logging v
+- Water Pollution Logging 
 - Water Pollution Monitoring
 - Water Pollution Analysis
 
-### **Getting All People**
+### **Water Usage Logging**
 
 ---
 
-API for getting all registered people.
+API for saving water usage data from arduino.
 
 * **URL**
 
   ```
-  /api/php/people
-  ```
-
-* **Method:**
-
-  `GET`
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** `[{"id_num":"id","first_name":"firstname","last_name":"lastname"}]`
-
-* **Sample Call:**
-
-  ```
-  curl -i /api/php/people
-  ```
-
-### **Getting Single Person**
-
----
-
-API for getting single person by id.
-
-* **URL**
-
-  ```
-  /api/php/people/:id
-  ```
-
-* **Method:**
-
-  `GET`
-
-* **URL Params**
-
-  URL params id needs to be specified.
-
-  **Required:**
-
-  `id=[integer]`
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** `{"id_num":"id","first_name":"firstname","last_name":"lastname"}`
-
-* **Sample Call:**
-
-  ```
-  curl -i /api/php/people/id
-  ```
-
-### **Registering Person**
-
----
-
-API for registering person.
-
-* **URL**
-
-  ```
-  /api/php/register
+  /https://bathroom-manager-api.herokuapp.com/waterUsageLogging
   ```
 
 * **Method:**
 
   `POST`
 
-* **Data Params**
-
-  Body request should included as mentioned below with the content type of application/x-www-form-urlencoded.
-
-  **Required:**
-
-  `numid=[integer], firstname=[string], lastname=[string]`
-
 * **Success Response:**
 
   * **Code:** 200 <br />
-
-* **Sample Call:**
-
-  ```
-  $.ajax({
-    url: "/api/php/register",
-    type: "POST",
-    dataType: "application/json",
-    contentType: "application/x-www-form-urlencoded",
-    success: function(data){
-      // function if success
-    },
-    error: function (err) {
-      // function if error
+    **Content:** `{
+    "message": "log created successfully",
+    "water_log": {
+        "tempCapacity": 1000,
+        "usageCapacity": 800,
+        "currentCapacity": 200,
+        "_id": "5cdb5d3ccfc30f001785a1db",
+        "request": {
+            "type": "GET",
+            "url": "http://localhost:3000/waterUsageLogging5cdb5d3ccfc30f001785a1db"
+        }
     }
-  });
-  ```
+}`
 
-### **Updating Person**
-
----
-
-API for updating person.
-
-* **URL**
+* **Sample body:**
 
   ```
-  /api/php/update/:id
-  ```
-
-* **Method:**
-
-  `PUT`
-
-* **URL Params**
-
-  URL params id needs to be specified.
-
-  **Required:**
-
-  `id=[integer]`
-
-* **Data Params**
-
-  Body request should included as mentioned below with the content type of application/x-www-form-urlencoded.
-
-  **Required:**
-
-  `firstname=[string], lastname=[string]`
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-
-* **Sample Call:**
-
-  ```
-  $.ajax({
-    url: "/api/php/update/123",
-    type: "PUT",
-    dataType: "application/json",
-    contentType: "application/x-www-form-urlencoded",
-    success: function(data){
-      // function if success
-    },
-    error: function (err) {
-      // function if error
-    }
-  });
-  ```
-
-### **Deleting Person**
-
----
-
-API for deleting person.
-
-* **URL**
-
-  ```
-  /api/php/delete/:id
-  ```
-
-* **Method:**
-
-  `PUT`
-
-* **URL Params**
-
-  URL params id needs to be specified.
-
-  **Required:**
-
-  `id=[integer]`
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-
-* **Sample Call:**
-
-  ```
-  $.ajax({
-    url: "/api/php/delete/123",
-    type: "PUT",
-    dataType: "application/json",
-    contentType: "application/x-www-form-urlencoded",
-    success: function(data){
-      // function if success
-    },
-    error: function (err) {
-      // function if error
-    }
-  });
-  ```
+  {
+	"tempCapacity": 1000,
+	"currentCapacity": 200
+  }
 
 ## Built With
 
 * [Express](https://expressjs.com/) - The web framework used
+* []
 
 ## Authors
 

@@ -8,7 +8,7 @@ const cleanreportRoutes = require('./api/routes/cleanlinessReport.js')
 const cleancommandRoutes = require('./api/routes/cleanlinessCommand.js')
 const availabilitycommandRoutes = require('./api/routes/availabilityCommand.js')
 const availabilityreportRoutes = require('./api/routes/availabilityReport.js')
-const availabilityManagementRoutes = require('./api/routes/availabilityManagement.js')
+const availabilityManagementRoutes = require('./api/routes/AvailabilityManagement.js')
 const waterUsageLoggingRoutes = require('./api/routes/waterUsageLogging.js')
 const waterPollutionLoggingRoutes = require('./api/routes/waterPollutionLogging.js')
 

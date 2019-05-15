@@ -4,13 +4,13 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const cleanreportRoutes = require('./api/routes/cleanlinessReport')
-const cleancommandRoutes = require('./api/routes/cleanlinessCommand')
-const availabilitycommandRoutes = require('./api/routes/availabilityCommand')
-const availabilityreportRoutes = require('./api/routes/availabilityReport')
-const availabilityManagementRoutes = require('./api/routes/availabilityManagement')
-const waterUsageLoggingRoutes = require('./api/routes/waterUsageLogging')
-const waterPollutionLoggingRoutes = require('./api/routes/waterPollutionLogging')
+const cleanreportRoutes = require('./api/routes/cleanlinessReport.js')
+const cleancommandRoutes = require('./api/routes/cleanlinessCommand.js')
+const availabilitycommandRoutes = require('./api/routes/availabilityCommand.js')
+const availabilityreportRoutes = require('./api/routes/availabilityReport.js')
+const availabilityManagementRoutes = require('./api/routes/availabilityManagement.js')
+const waterUsageLoggingRoutes = require('./api/routes/waterUsageLogging.js')
+const waterPollutionLoggingRoutes = require('./api/routes/waterPollutionLogging.js')
 
 
 
